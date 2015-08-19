@@ -4,13 +4,15 @@
 import os
 import stat
 import hashlib
-
+import urllib 
+from mimetypes import MimeTypes
 from OptionKey import OptionKey
 
 class MyFile(object):
     __READBUFFSIZE = 4096
     mMd5Checksum = None
     mSha1Checksum = None
+    mMimeType = None
     
     def __init__(self, path, name):
         self.mPath = path
@@ -36,6 +38,18 @@ class MyFile(object):
     @property
     def size(self):
         return os.stat(self.mFullPathName)[stat.ST_SIZE]
+    
+    @property
+    def mime(self):
+        if self.mMimeType is not None:
+            return self.mMimeType
+        
+        mime = MimeTypes()
+        url = urllib.pathname2url(self.mFullPathName)
+        self.mMimeType = mime.guess_type(url)[0]
+        if self.mMimeType is None:
+            self.mMimeType = "Unkown/None"
+        return self.mMimeType
     
     def __getMd5CheckSum(self):
         if self.mMd5Checksum is not None:

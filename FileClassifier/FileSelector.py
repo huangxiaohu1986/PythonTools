@@ -11,18 +11,25 @@ class FileSelector(object):
     def initialize(self, config):
         self.mInputDir = config[OptionKey.INPUT]
         self.mOutputDir = config[OptionKey.OUTPUT]
-        self.mCheckSumType = config[OptionKey.TYPE]
+        self.mCheckSumType = config[OptionKey.CHECKSUM_TYPE]
             
     def outputToTarget(self):
         if(len(self.mOutputList) == 0):
             print("There is valid file")
             return
         
+        """create output dor if needed"""
         if not os.path.exists(self.mOutputDir):
             os.mkdir(self.mOutputDir)
+        outputDir = [(self.mOutputDir +  sourceFile.mime[:sourceFile.mime.find('/') + 1]) for sourceFile in self.mOutputList]
+        for path in outputDir:
+            if not os.path.exists(path):
+                os.mkdir(path)
+        
+        """copy the files to the output dir"""
         map(shutil.copy,
             [sourceFile.fullPathName for sourceFile in self.mOutputList],
-            [(self.mOutputDir + sourceFile.name) for sourceFile in self.mOutputList])
+            [(dir + sourceFile.name) for dir,sourceFile in zip(outputDir, self.mOutputList)])
         
     def processPickoutFiles(self):
         fileList = [MyFile(self.mInputDir, name) for name in os.listdir(self.mInputDir)]

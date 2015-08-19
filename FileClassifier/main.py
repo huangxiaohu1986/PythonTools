@@ -9,7 +9,7 @@ from OptionKey import OptionKey
 
 config = {OptionKey.INPUT:"E:/test/",
     OptionKey.OUTPUT:"E:/testResult/",
-    OptionKey.TYPE:"md5"}
+    OptionKey.CHECKSUM_TYPE:"md5"}
 
 def usage():
     print("File classfier useage:\n")
