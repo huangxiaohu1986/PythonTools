@@ -3,6 +3,7 @@
 
 import os
 import stat
+import time
 import hashlib
 import urllib 
 from mimetypes import MimeTypes
@@ -32,8 +33,16 @@ class MyFile(object):
         return self.mFullPathName;
     
     @property
-    def atime(self):
-        return os.stat(self.mFullPathName)[stat.ST_ATIME]
+    def atimeStr(self):
+        aTime = os.stat(self.mFullPathName)[stat.ST_ATIME]
+        localtime = time.localtime(aTime)
+        return time.strftime('%Y-%m-%d %H:%M:%S',localtime)
+    
+    @property
+    def createtimeStr(self):
+        cTime = os.path.getctime(self.mFullPathName)
+        localtime = time.localtime(cTime)
+        return time.strftime('%Y-%m-%d %H:%M:%S',localtime)
     
     @property
     def size(self):

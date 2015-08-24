@@ -12,6 +12,17 @@ class FileSelector(object):
         self.mInputDir = config[OptionKey.INPUT]
         self.mOutputDir = config[OptionKey.OUTPUT]
         self.mCheckSumType = config[OptionKey.CHECKSUM_TYPE]
+        self.mClassifyType = config[OptionKey.CLASSIFY_TYPE]
+    
+    def __generateOutputDir(self, classifyType):
+        if classifyType is OptionKey.date:
+            #the data format is YYYY-MM-DD hh:mm:ss,we need years and month only
+            return [(self.mOutputDir +  str(sourceFile.createtimeStr[:sourceFile.createtimeStr.rfind("-")])
+                     + os.sep) for sourceFile in self.mOutputList]
+        else:
+            #the mime format is general-type/detail-type,we need general type only
+            return [(self.mOutputDir +  sourceFile.mime[:sourceFile.mime.find('/') + 1]) for sourceFile in self.mOutputList]
+    
             
     def outputToTarget(self):
         if(len(self.mOutputList) == 0):
@@ -21,7 +32,7 @@ class FileSelector(object):
         """create output dor if needed"""
         if not os.path.exists(self.mOutputDir):
             os.mkdir(self.mOutputDir)
-        outputDir = [(self.mOutputDir +  sourceFile.mime[:sourceFile.mime.find('/') + 1]) for sourceFile in self.mOutputList]
+        outputDir = self.__generateOutputDir(self.mClassifyType)
         for path in outputDir:
             if not os.path.exists(path):
                 os.mkdir(path)
