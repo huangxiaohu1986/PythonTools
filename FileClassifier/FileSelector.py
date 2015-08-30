@@ -47,6 +47,11 @@ class FileSelector(object):
             newName = name + "_" + str(counterDic[key]) + ext
             counterDic[key] = counterDic.get(key) + 1
             return newName
+    
+    def __warpperCopy(self, sourcePath, destPath):
+        self.mCounter += 1
+        print("ClassFile process in {0}/{1}".format(self.mCounter, self.mTotal))
+        shutil.copy(sourcePath, destPath)
         
     def outputToTarget(self):
         if(len(self.mOutputList) == 0):
@@ -63,8 +68,10 @@ class FileSelector(object):
         
         """copy the files to the output dir"""
         dupNamesCounterDic = dict()
+        self.mCounter = 0
+        self.mTotal = len(self.mOutputList)
         
-        map(shutil.copy,
+        map(self.__warpperCopy,
             [sourceFile.fullPathName for sourceFile in self.mOutputList],
             [(dir + self.__renameDumplicateFiles(sourceFile, dupNamesCounterDic))
                 for dir,sourceFile in zip(outputDir, self.mOutputList)])
