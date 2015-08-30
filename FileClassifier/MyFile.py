@@ -18,7 +18,7 @@ class MyFile(object):
     def __init__(self, path, name):
         self.mPath = path
         self.mName = name
-        self.mFullPathName = path + name
+        self.mFullPathName = os.path.join(path, name)
     
     @property
     def path(self):
