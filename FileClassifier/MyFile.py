@@ -89,7 +89,6 @@ class MyFile(object):
         return self.mSha1Checksum
     
     def getCheckSum(self, type):
-        print("File {0} Generate checksum by {1}".format(self.mFullPathName, type))
         if OptionKey.MD5 is type:
             return self.__getMd5CheckSum()
         elif OptionKey.SHA1 is type:

@@ -6,6 +6,7 @@ class OptionKey(object):
     OUTPUT = "output"
     CHECKSUM_TYPE = "checksum_type"
     CLASSIFY_TYPE = "classify_type"
+    VERBOSE = "verbose"
     
     MD5 = "md5"
     SHA1 = "sha1"

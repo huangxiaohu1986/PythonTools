@@ -13,6 +13,7 @@ class FileSelector(object):
         self.mOutputDir = config[OptionKey.OUTPUT]
         self.mCheckSumType = config[OptionKey.CHECKSUM_TYPE]
         self.mClassifyType = config[OptionKey.CLASSIFY_TYPE]
+        self.mVerbose = config[OptionKey.VERBOSE]
     
     def __generateOutputDir(self, classifyType):
         if classifyType is OptionKey.date:
@@ -50,7 +51,8 @@ class FileSelector(object):
     
     def __warpperCopy(self, sourcePath, destPath):
         self.mCounter += 1
-        print("ClassFile process in {0}/{1}".format(self.mCounter, self.mTotal))
+        if self.mVerbose:
+            print("ClassFile process in {0}/{1}".format(self.mCounter, self.mTotal))
         shutil.copy(sourcePath, destPath)
         
     def outputToTarget(self):
